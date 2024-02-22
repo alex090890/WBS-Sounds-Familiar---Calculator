@@ -7,6 +7,31 @@
  * - clear: clears the history
  */
 
+class Calculator {
+    constructor(){
+        this._history = [];
+    }
+    
+    history(value){
+        this._history.push(value);
+    }
+    
+    getHistory(){
+        return this._history;
+    }
+    
+    equals(value){
+        const result = eval(value);
+        this.history(result);
+        return result;
+    }
+    
+    clear(){
+        this._history = [];
+    }
+}
+
+const CalculatorInstance = new Calculator();
 const calculatorScreen = document.querySelector("#calculator .screen");
 const equals = document.querySelector("#calculator .eval");
 
@@ -27,8 +52,20 @@ document.querySelectorAll("#calculator span").forEach((key) => {
   }
 });
 
+document.querySelectorAll("#calculator span").forEach((key) => {
+  if (key.innerText === "=") {
+    key.addEventListener("click", (e) => {
+        calculatorScreen.innerHTML = CalculatorInstance.equals(calculatorScreen.innerHTML);
+        console.log(CalculatorInstance.getHistory());
+    });
+  }
+});
+
 document
   .querySelector("#calculator .clear")
-  .addEventListener("click", () => (calculatorScreen.innerHTML = ""));
+  .addEventListener("click", () => {
+      calculatorScreen.innerHTML = "";
+      CalculatorInstance.clear();
+    });
 
 // Implement here the event when the = key is pressed
